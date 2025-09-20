@@ -17,6 +17,8 @@ apt update && apt upgrade
 
 echo "lajto   ALL=(ALL) ALL" >> /etc/sudoers
 
+sudo timedatectl set-timezone UTC
+
 # REBOOT
 
 ###############################################################################
