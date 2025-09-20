@@ -23,6 +23,11 @@ After running every command, I should configure:
 - OBS Studio
 - Anki
 
+GNOME extensions:
+
+- https://extensions.gnome.org/extension/4630/no-titlebar-when-maximized/
+- https://extensions.gnome.org/extension/946/panel-world-clock-lite/
+
 And finally:
 
 ```sh
