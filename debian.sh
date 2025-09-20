@@ -1,4 +1,4 @@
-# LAST DEBIAN VERSION TESTED: 12
+# LAST DEBIAN VERSION TESTED: 13
 # Desktop environment: GNOME
 
 ###############################################################################
@@ -9,9 +9,9 @@ su
 
 gnome-text-editor /etc/apt/sources.list  # add to all: contrib non-free
 # Add:
-# # bookworm-backports
-# deb http://httpredir.debian.org/debian bookworm-backports main non-free-firmware contrib non-free
-# deb-src http://httpredir.debian.org/debian bookworm-backports main non-free-firmware contrib non-free
+# # trixie-backports
+# deb http://httpredir.debian.org/debian trixie-backports main non-free-firmware contrib non-free
+# deb-src http://httpredir.debian.org/debian trixie-backports main non-free-firmware contrib non-free
 
 apt update && apt upgrade
 
@@ -23,35 +23,37 @@ echo "lajto   ALL=(ALL) ALL" >> /etc/sudoers
 #                                   SOFTWARE                                  #
 ###############################################################################
 
-sudo apt install -y wget nano git make pulseaudio libcanberra-pulse mpg123 \
+sudo apt install wget nano git make libcanberra-pulse mpg123 \
 libpulse0 libxml2 giflib-tools libc6 gtk2-engines gcc ca-certificates gnupg2 \
 gcc-multilib g++ g++-multilib cmake lm-sensors apt-transport-https curl
 
 # 32 bits architecture
 sudo dpkg --add-architecture i386
 sudo apt update
-sudo apt upgrade -y
-sudo apt install -y binutils-multiarch libstdc++6:i386 libgcc1:i386 \
-zlib1g:i386 libncurses5:i386 libcanberra-pulse:i386 \
-libpulse0:i386 libxml2:i386
+sudo apt upgrade
+sudo apt install binutils-multiarch libstdc++6:i386 libgcc1:i386 \
+zlib1g:i386 libcanberra-pulse:i386 libpulse0:i386 libxml2:i386
 
 # NVIDIA drivers
-sudo apt install -y linux-headers-$(uname -r|sed 's/[^-]*-[^-]*-//')
+sudo apt install linux-headers-$(uname -r|sed 's/[^-]*-[^-]*-//')
 sudo apt update
-sudo apt install -y nvidia-driver nvidia-driver-libs:i386 \
+sudo apt install nvidia-driver nvidia-driver-libs:i386 \
 nvidia-vulkan-icd nvidia-vulkan-icd:i386 firmware-misc-nonfree \
 mesa-vulkan-drivers libglx-mesa0:i386 mesa-vulkan-drivers:i386 \
 libgl1-mesa-dri:i386
-sudo apt install -y nvidia-vaapi-driver # NOTE: Very important for OBS!
+sudo apt install nvidia-vaapi-driver # NOTE: Very important for OBS!
 
 # REBOOT
 
+# Required for Cursor
+sudo apt install libfuse2
+
 # Compression tools
-sudo apt install -y rar unrar p7zip p7zip-full p7zip-rar unace zip unzip \
+sudo apt install rar unrar p7zip p7zip-full p7zip-rar unace zip unzip \
 bzip2 arj lhasa lzip xz-utils
 
 # Codecs
-sudo apt install -y ffmpegthumbnailer \
+sudo apt install ffmpegthumbnailer \
 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
 libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base \
 gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
@@ -61,7 +63,7 @@ gstreamer1.0-qt5 gstreamer1.0-pulseaudio gstreamer1.0-nice \
 gstreamer1.0-vaapi
 
 # Fonts
-sudo apt install -y fonts-cantarell fonts-liberation fonts-noto \
+sudo apt install fonts-cantarell fonts-liberation fonts-noto \
 ttf-mscorefonts-installer fonts-stix otf-stix \
 fonts-oflb-asana-math fonts-mathjax
 wget https://github.com/adobe-fonts/source-code-pro/archive/1.017R.zip && \
@@ -70,19 +72,13 @@ unzip 1.017R.zip && sudo mv source-code-pro-1.017R/OTF/*.otf \
 source-code-pro-1.017R
 
 # Japanese and Chinese input
-sudo apt install -y ibus-anthy ibus-mozc ibus-libpinyin
-
-# Remove software
-sudo apt remove -y gnome-chess aisleriot gnome-klotski \
-iagno tali gnome-sudoku gnome-mahjongg gnome-tetravex \
-gnome-taquin swell-foop gnome-robots quadrapassel gnome-nibbles \
-gnome-mines lightsoff hitori four-in-a-row five-or-more
+sudo apt install ibus-anthy ibus-mozc ibus-libpinyin
 
 # Software
-sudo apt install -y gnome-tweaks rhythmbox rhythmbox-plugins \
+sudo apt install gnome-tweaks rhythmbox rhythmbox-plugins \
 simple-scan transmission-gtk gimp inkscape audacity kid3 gparted \
 soundconverter libreoffice mpv kdenlive blender gnome-clocks \
-keepassxc screenfetch neofetch geogebra gnome-boxes vim
+keepassxc screenfetch geogebra gnome-boxes vim
 
 # Custom GNOME shortcuts (vertical workspaces)
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left \
@@ -96,14 +92,8 @@ echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.
 sudo apt update
 sudo apt install google-chrome-stable
 
-# Skype
-curl -sSL https://repo.skype.com/data/SKYPE-GPG-KEY | sudo gpg --dearmor -o /usr/share/keyrings/skype-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/skype-keyring.gpg] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skype-stable.list
-sudo apt update # If WARNING message: https://askubuntu.com/a/1409985
-sudo apt install skypeforlinux
-
 # Discord
-sudo apt install wget gconf-service gconf2-common libc++1 libc++1-14 libc++abi1-14 libgconf-2-4 libunwind-14
+sudo apt install libc++1
 wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
 sudo apt install ./discord.deb
 rm ./discord.deb
@@ -120,9 +110,9 @@ sudo apt install code
 rm ./microsoft.gpg
 
 # Docker
-sudo
-apt install apt-transport-https ca-certificates \
-curl gnupg-agent software-properties-common
+su
+sudo apt install apt-transport-https ca-certificates \
+curl gnupg-agent
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
 sudo gpg --dearmor > /etc/apt/trusted.gpg.d/docker.gpg
 echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -sc) stable" \
@@ -135,7 +125,7 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # Autoremove
-sudo apt autoremove -y
+sudo apt autoremove
 
 # Telegram
 wget -O telegram.tar.xz https://telegram.org/dl/desktop/linux
@@ -143,22 +133,6 @@ tar -xvf telegram.tar.xz
 rm telegram.tar.xz
 mv Telegram ~/.telegram-desktop-dir
 ~/.telegram-desktop-dir/Telegram # launchs Telegram
-
-# Anki
-sudo apt install libxcb-cursor0
-wget -O anki.tar.zst https://github.com/ankitects/anki/releases/download/2.1.62/anki-2.1.62-linux-qt6.tar.zst
-tar --use-compress-program=unzstd -xvf anki.tar.zst
-rm anki.tar.zst
-mv anki-* ~/.anki-hidden-dir
-cd ~/.anki-hidden-dir/ && sudo ./install.sh && cd ~
-# Uninstall: ./uninstall.sh
-
-# Tuta Desktop
-wget https://app.tuta.com/desktop/tutanota-desktop-linux.AppImage
-mkdir -p ~/.tutanota-dir/
-mv tutanota-desktop-linux.AppImage ~/.tutanota-dir/
-chmod a+x ~/.tutanota-dir/tutanota-desktop-linux.AppImage
-~/.tutanota-dir/tutanota-desktop-linux.AppImage # launchs Tutanota
 
 # Flatpak
 sudo apt install flatpak
@@ -174,5 +148,41 @@ sudo apt install steam-installer
 sudo apt install wine wine32 wine64 libwine libwine:i386 fonts-wine
 sudo apt install winetricks
 winetricks corefonts fontfix vcrun2005sp1 vcrun2008 vcrun6
+
+# Fix scroll desync in VS Code (and potentially other software)
+sudo apt install imwheel
+
+nano ~/.imwheelrc
+#############################################
+".*"
+Control_L, Up,   Control_L|Button4
+Control_L, Down, Control_L|Button5
+Control_R, Up,   Control_R|Button4
+Control_R, Down, Control_R|Button5
+#############################################
+
+mkdir -p ~/.config/systemd/user
+touch ~/.config/systemd/user/imwheel.service
+
+nano ~/.config/systemd/user/imwheel.service
+#############################################
+[Unit]
+Description=IMWheel
+Wants=display-manager.service
+After=display-manager.service
+
+[Service]
+Type=simple
+Environment=XAUTHORITY=%h/.Xauthority
+ExecStart=/usr/bin/imwheel -b "4 5" -d
+ExecStop=/usr/bin/pkill imwheel
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical-session.target
+#############################################
+
+systemctl --user enable imwheel.service
+systemctl --user start imwheel.service
 
 # REBOOT
