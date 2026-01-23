@@ -1,4 +1,4 @@
-# LAST DEBIAN VERSION TESTED: 13
+# LATEST DEBIAN VERSION TESTED: 13
 # Desktop environment: GNOME
 
 ###############################################################################
@@ -15,9 +15,13 @@ gnome-text-editor /etc/apt/sources.list  # add to all: contrib non-free
 
 apt update && apt upgrade
 
-echo "lajto   ALL=(ALL) ALL" >> /etc/sudoers
+apt install flatpak gnome-software-plugin-flatpak
+flatpak update --appstream
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-sudo timedatectl set-timezone UTC
+usermod -aG sudo lajto
+
+timedatectl set-timezone UTC
 
 # REBOOT
 
@@ -37,7 +41,7 @@ sudo apt install binutils-multiarch libstdc++6:i386 libgcc1:i386 \
 zlib1g:i386 libcanberra-pulse:i386 libpulse0:i386 libxml2:i386
 
 # NVIDIA drivers
-sudo apt install linux-headers-$(uname -r|sed 's/[^-]*-[^-]*-//')
+sudo apt install linux-headers-amd64
 sudo apt update
 sudo apt install nvidia-driver nvidia-driver-libs:i386 \
 nvidia-vulkan-icd nvidia-vulkan-icd:i386 firmware-misc-nonfree \
@@ -79,8 +83,8 @@ sudo apt install ibus-anthy ibus-mozc ibus-libpinyin
 # Software
 sudo apt install gnome-tweaks rhythmbox rhythmbox-plugins \
 simple-scan transmission-gtk gimp inkscape audacity kid3 gparted \
-soundconverter libreoffice mpv kdenlive blender gnome-clocks \
-keepassxc screenfetch geogebra gnome-boxes vim
+soundconverter libreoffice mpv vlc kdenlive gnome-clocks \
+screenfetch geogebra gnome-boxes vim
 
 # Custom GNOME shortcuts (vertical workspaces)
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left \
@@ -102,6 +106,9 @@ rm ./discord.deb
 
 # OBS Studio
 sudo apt install obs-studio
+
+# Blender
+flatpak install flathub org.blender.Blender
 
 # VS Code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
@@ -135,11 +142,6 @@ tar -xvf telegram.tar.xz
 rm telegram.tar.xz
 mv Telegram ~/.telegram-desktop-dir
 ~/.telegram-desktop-dir/Telegram # launchs Telegram
-
-# Flatpak
-sudo apt install flatpak
-sudo apt install gnome-software-plugin-flatpak
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Steam
 sudo apt install libgtk2.0-0:i386
