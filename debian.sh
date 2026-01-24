@@ -41,6 +41,7 @@ sudo apt install binutils-multiarch libstdc++6:i386 libgcc1:i386 \
 zlib1g:i386 libcanberra-pulse:i386 libpulse0:i386 libxml2:i386
 
 # NVIDIA drivers
+## IMPORTANT: For modern GPUs: https://forums.developer.nvidia.com/t/5090-working-on-debian-13-with-nvidia-open-driver-version-580-95-05/347268
 sudo apt install linux-headers-amd64
 sudo apt update
 sudo apt install nvidia-driver nvidia-driver-libs:i386 \
@@ -109,6 +110,7 @@ sudo apt install obs-studio
 
 # Blender
 flatpak install flathub org.blender.Blender
+flatpak install flathub org.freedesktop.Platform.GL.nvidia
 
 # VS Code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
