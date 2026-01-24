@@ -26,7 +26,7 @@ timedatectl set-timezone UTC
 # REBOOT
 
 ###############################################################################
-#                                   SOFTWARE                                  #
+#                                BASICS AND GPU                               #
 ###############################################################################
 
 sudo apt install wget nano git make libcanberra-pulse mpg123 \
@@ -51,6 +51,10 @@ libgl1-mesa-dri:i386
 sudo apt install nvidia-vaapi-driver # NOTE: Very important for OBS!
 
 # REBOOT
+
+###############################################################################
+#                                   SOFTWARE                                  #
+###############################################################################
 
 # Required for Cursor
 sudo apt install libfuse2
@@ -110,7 +114,6 @@ sudo apt install obs-studio
 
 # Blender
 flatpak install flathub org.blender.Blender
-flatpak install flathub org.freedesktop.Platform.GL.nvidia
 
 # VS Code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
