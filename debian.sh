@@ -5,7 +5,7 @@
 #                                   BASICS                                    #
 ###############################################################################
 
-su
+su -
 
 gnome-text-editor /etc/apt/sources.list  # add to all: contrib non-free
 # Add:
